@@ -31,13 +31,28 @@
 ## Install APT Transport package and Setting Up repos for KUBERNETES Packages:
 - apt-get update && apt-get install -y apt-transport-https curl
 - curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
-- cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
+- vim /etc/apt/sources.list.d/kubernetes.list
   deb http://apt.kubernetes.io/ kubernetes-xenial main
-  EOF
 - apt-get update
 
 ## Install kubeadm, Kubelet And Kubectl
 - apt-get install -y kubelet kubeadm kubectl
-- vim /etc/systemd/system/kubelet.service.d/10-kubeadm.conf in [Service Section]
+- vim /etc/systemd/system/kubelet.service.d/10-kubeadm.conf  in Service Section
   Environment=”cgroup-driver=systemd/cgroup-driver=cgroupfs”
-- 
+
+## On Kubernetes Master Only
+- kubeadm init --apiserver-advertise-address=<IP Address of Kube-Master> --pod-network-cidr=192.168.0.0/16
+
+The above command will throw you two commands Just note down and save it
+
+  ## Commad 1:
+
+  ## Run the commands from the above output as a non-root user
+  - mkdir -p $HOME/.kube
+  - sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  - sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+  ## Command 2:
+  - kubeadm join 192.168.56.104:6443 --token uln0pz.zcoblbiu2xb0xpnv --discovery-token-ca-cert-hash     sha256:d5f792b8a8a328eb1c278d7c20db2df47cb6e15ea2f1b171b83217f83856c125
+  
+  
