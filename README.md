@@ -43,7 +43,9 @@
 ## On Kubernetes Master Only
 - kubeadm init --apiserver-advertise-address=<IP Address of Kube-Master> --pod-network-cidr=192.168.0.0/16
 
-The above command will throw you two commands Just note down and save it
+The above command start the kubernetes on master node and will give you two commands as show below. 
+Command 1 - Used to setup the non-root user and can execute 'kubectl commands'
+Command 2 - Used to join the worker nodes to master which form cluster. This should be executed on only worker nodes. 
 
   ## Commad 1:
 
@@ -53,6 +55,12 @@ The above command will throw you two commands Just note down and save it
   - sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
   ## Command 2:
-  - kubeadm join 192.168.56.104:6443 --token uln0pz.zcoblbiu2xb0xpnv --discovery-token-ca-cert-hash     sha256:d5f792b8a8a328eb1c278d7c20db2df47cb6e15ea2f1b171b83217f83856c125
-  
+  - kubeadm join <IP Address of Kube-Master>:6443 --token uln0pz.zcoblbiu2xb0xpnv --discovery-token-ca-cert-hash     sha256:d5f792b8a8a328eb1c278d7c20db2df47cb6e15ea2f1b171b83217f83856c125
+ 
+ Once the 'kubeadm init' exectuion is completed successfully, you shoudl be able to see the created  default 'NAMSPACES & PODS' on kubemaster
+ - kubectl get pods -o wide --all-namespaces
+ 
+ You will notice from the previous command, that all the pods are running except one: ‘kube-dns’. 
+ For resolving this we will install a pod network. 
+ I have used CALICO to create CALICO pod network, run the following command:
   
