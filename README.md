@@ -1,4 +1,4 @@
-# KUBERNETES and WORDPRESS SETUP
+# WORDPRESS on KUBERNETES 
 
 ## Requirements:
 -	Kubernetes Cluster (1 Master & 1 Worker Nodes)
